@@ -1,13 +1,19 @@
 exports.handler = async function (event, context) {
 
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization:
+        `Basic ${process.env.SPOTIFY_TOKEN}`,
+    },
+    body: new URLSearchParams({ grant_type: "client_credentials" }),
+  };
 
+  const response = await fetch("https://accounts.spotify.com/api/token", options)
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      "access_token": "BQBqEO_hmP_M_5SymUBfL_Zr7Gs-AXfRNS8dtZK47By5oPSHbrwdCnmKaiShjDST2jn8JymDQwORAyOeK1_aq7-uk9zJAByaHYZrRewqZfdzoPef33w",
-      "token_type": "Bearer",
-      "expires_in": 3600
-    }),
+    body: JSON.stringify(response),
   };
 };
