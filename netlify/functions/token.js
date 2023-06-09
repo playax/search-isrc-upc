@@ -12,7 +12,7 @@ exports.handler = async function () {
 
   console.log({options})
 
-  const response = await fetch("https://accounts.spotify.com/api/token", options)
+  const response = await (await fetch("https://accounts.spotify.com/api/token", options)).json()
 
   console.log({response})
 
