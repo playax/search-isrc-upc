@@ -68,7 +68,7 @@
       try {
         const res =  await fetch('/.netlify/functions/token').json()
         return res.access_token
-      } catch (error) {
+      } catch (err) {
         console.error(err);
         document.getElementById("result").innerHTML = "<p>Erro ao pegar token do Spotify</p>";
       }
