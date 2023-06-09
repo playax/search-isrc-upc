@@ -1,4 +1,4 @@
-exports.handler = async function (event, context) {
+exports.handler = async function () {
 
   const options = {
     method: "POST",
@@ -10,7 +10,11 @@ exports.handler = async function (event, context) {
     body: new URLSearchParams({ grant_type: "client_credentials" }),
   };
 
+  console.log({options})
+
   const response = await fetch("https://accounts.spotify.com/api/token", options)
+
+  console.log({response})
 
   return {
     statusCode: 200,
