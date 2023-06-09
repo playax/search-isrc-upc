@@ -66,7 +66,7 @@
 
     async function getSpotifyToken() {
       try {
-        return await fetch('/netlify/functions/token') 
+        return await fetch('/.netlify/functions/token') 
       } catch (error) {
         console.error(err);
         document.getElementById("result").innerHTML = "<p>Erro ao pegar token do Spotify</p>";
