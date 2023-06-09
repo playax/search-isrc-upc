@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head> </head>
+  <body>
+    <label>Buscar ISRC</label>
+    <input type="text" id="track_id" />
+    <button onclick="buscarIsrc()">Buscar ISRC</button>
+
+    <label>Buscar UPC</label>
+    <input type="text" id="album_id" />
+    <button onclick="buscarUpc()">Buscar UPC</button>
+
+    <pre id="result"></pre>
+  </body>
+
+  <script>
+    async function buscarIsrc() {
+      const track_id = document.getElementById("track_id").value;
+      const token = await getSpotifyToken();
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      fetch(`https://api.spotify.com/v1/tracks/${track_id}`, options)
+        .then((response) => response.json())
+        .then(
+          (response) =>
+            (document.getElementById(
+              "result"
+            ).innerHTML = `<p>ISRC: ${response.external_ids.isrc}</p>`)
+        )
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("result").innerHTML = "<p>Dado não encontrado</p>";
+        })
+        .finally(() => (document.getElementById("track_id").value = ""));
+    }
+
+    async function buscarUpc() {
+      const album_id = document.getElementById("album_id").value;
+      const token = await getSpotifyToken();
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      fetch(`https://api.spotify.com/v1/albums/${album_id}`, options)
+        .then((response) => response.json())
+        .then(
+          (response) =>
+            (document.getElementById(
+              "result"
+            ).innerHTML = `<p>UPC: ${response.external_ids.upc}</p>`)
+        )
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("result").innerHTML = "<p>Dado não encontrado</p>";
+        })
+        .finally(() => (document.getElementById("album_id").value = ""));
+    }
+
+    async function getSpotifyToken() {
+      try {
+        return await fetch('/netlify/functions/token') 
+      } catch (error) {
+        console.error(err);
+        document.getElementById("result").innerHTML = "<p>Erro ao pegar token do Spotify</p>";
+      }
+    }
+  </script>
+</html>
